@@ -297,10 +297,20 @@ Top-level compound types, but hot products get own nav items (GLP-1, Reta, Tirz)
 
 ### Checkout Patterns
 - **Guest checkout:** Available at most sites
-- **Account incentive:** Some offer 10-25% off for registration
-- **Age gate:** Rarely visible (Loti Labs has JS-based gating)
-- **RUO checkbox:** Not observed as explicit checkbox; instead, site-wide messaging
-- **Multi-payment display:** Sites offering crypto show it prominently with discount incentive
+- **Account REQUIRED:** Loti Labs is the strictest — users must create an account and certify they are a "qualified researcher" before they can even browse products. This is the strictest access gate in the competitive set.
+- **Account incentive:** Some offer 10-25% off for registration (Peptide Pros: 25%)
+- **Age gate:** No site implements a formal age gate popup. Loti Labs' account requirement is the closest equivalent.
+- **RUO acknowledgment:** Limitless Biotech has a dedicated "Research Use Acknowledgment" page. Loti Labs builds RUO certification into account creation. No site uses a checkout checkbox.
+- **Multi-payment display:** Sites offering crypto show it prominently with discount incentive (Limitless: 10% off crypto, 5% off CashApp/bank; Loti Labs: 2.5% off ACH)
+
+### Unique UX Features Worth Noting
+- **Loti Labs — Peptide Calculator:** Reconstitution/dosage calculator tool (lotilabs.com/peptide-calculator/) — unique in the competitive set
+- **Loti Labs — VIP Program:** Membership/loyalty program for repeat buyers
+- **Loti Labs — Advanced Search:** Dedicated advanced search page beyond basic search bar
+- **Limitless Biotech — Dual Taxonomy:** "Shop by Type" AND "Shop by Research Category" — most sophisticated nav
+- **Sports Technology Labs — "How To Pay" page:** Dedicated page explaining payment options — reduces checkout friction
+- **Swole AF Labs — Experience-Level Taxonomy:** Products categorized as Beginner/Intermediate/Advanced — unique approach
+- **Core Peptides — Customizable Orders:** Custom peptide orders as a service offering
 
 ### Mobile
 - All observed sites are responsive (WordPress/WooCommerce responsive themes)
