@@ -8,6 +8,8 @@ import { z } from 'zod'
 const checkoutSchema = z.object({
   email: z.string().email(),
   shippingName: z.string().min(1),
+  firstName: z.string().min(1).optional(),
+  lastName: z.string().min(1).optional(),
   shippingAddress: z.object({
     line1: z.string().min(1),
     line2: z.string().optional(),
@@ -34,6 +36,7 @@ const checkoutSchema = z.object({
     cvv: z.string().min(1),
   }),
   ruoAcknowledged: z.literal(true),
+  ageAcknowledged: z.literal(true),
 })
 
 export async function POST(request: Request) {
@@ -59,7 +62,7 @@ export async function POST(request: Request) {
       (sum, item) => sum + item.price * item.quantity,
       0
     )
-    const shipping = subtotal >= 99 ? 0 : 9.99
+    const shipping = subtotal >= 250 ? 0 : 9.99
     const total = subtotal + shipping
 
     // 3. Process payment

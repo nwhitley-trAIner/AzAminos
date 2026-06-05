@@ -9,6 +9,11 @@ interface Category {
   slug: string
 }
 
+interface BulkTierInput {
+  qty: string
+  price: string
+}
+
 interface VariantInput {
   name: string
   sku: string
@@ -16,6 +21,7 @@ interface VariantInput {
   compareAtPrice: string
   stock: string
   weight: string
+  bulkTiers: BulkTierInput[]
 }
 
 export default function NewProductPage() {
@@ -46,7 +52,7 @@ export default function NewProductPage() {
   })
 
   const [variants, setVariants] = useState<VariantInput[]>([
-    { name: '5mg', sku: '', price: '', compareAtPrice: '', stock: '0', weight: '' },
+    { name: '5mg', sku: '', price: '', compareAtPrice: '', stock: '0', weight: '', bulkTiers: [] },
   ])
 
   useEffect(() => {
@@ -80,13 +86,48 @@ export default function NewProductPage() {
   function addVariant() {
     setVariants((prev) => [
       ...prev,
-      { name: '', sku: '', price: '', compareAtPrice: '', stock: '0', weight: '' },
+      { name: '', sku: '', price: '', compareAtPrice: '', stock: '0', weight: '', bulkTiers: [] },
     ])
   }
 
   function removeVariant(index: number) {
     if (variants.length <= 1) return
     setVariants((prev) => prev.filter((_, i) => i !== index))
+  }
+
+  function addTier(variantIndex: number) {
+    setVariants((prev) =>
+      prev.map((v, i) =>
+        i === variantIndex
+          ? { ...v, bulkTiers: [...v.bulkTiers, { qty: '', price: '' }] }
+          : v
+      )
+    )
+  }
+
+  function updateTier(variantIndex: number, tierIndex: number, field: 'qty' | 'price', value: string) {
+    setVariants((prev) =>
+      prev.map((v, i) =>
+        i === variantIndex
+          ? {
+              ...v,
+              bulkTiers: v.bulkTiers.map((t, ti) =>
+                ti === tierIndex ? { ...t, [field]: value } : t
+              ),
+            }
+          : v
+      )
+    )
+  }
+
+  function removeTier(variantIndex: number, tierIndex: number) {
+    setVariants((prev) =>
+      prev.map((v, i) =>
+        i === variantIndex
+          ? { ...v, bulkTiers: v.bulkTiers.filter((_, ti) => ti !== tierIndex) }
+          : v
+      )
+    )
   }
 
   async function handleSubmit(e: React.FormEvent) {
@@ -102,14 +143,21 @@ export default function NewProductPage() {
           ...form,
           purity: form.purity ? parseFloat(form.purity) : undefined,
           tags: form.tags ? form.tags.split(',').map((t) => t.trim()) : [],
-          variants: variants.map((v) => ({
-            name: v.name,
-            sku: v.sku,
-            price: parseFloat(v.price),
-            compareAtPrice: v.compareAtPrice ? parseFloat(v.compareAtPrice) : undefined,
-            stock: parseInt(v.stock, 10),
-            weight: v.weight ? parseFloat(v.weight) : undefined,
-          })),
+          variants: variants.map((v) => {
+            const bulkPricing = v.bulkTiers
+              .filter((t) => t.qty && t.price)
+              .map((t) => ({ qty: parseInt(t.qty, 10), price: parseFloat(t.price) }))
+              .sort((a, b) => a.qty - b.qty)
+            return {
+              name: v.name,
+              sku: v.sku,
+              price: parseFloat(v.price),
+              compareAtPrice: v.compareAtPrice ? parseFloat(v.compareAtPrice) : undefined,
+              stock: parseInt(v.stock, 10),
+              weight: v.weight ? parseFloat(v.weight) : undefined,
+              bulkPricing: bulkPricing.length > 0 ? bulkPricing : undefined,
+            }
+          }),
         }),
       })
 
@@ -307,6 +355,63 @@ export default function NewProductPage() {
                 <input type="number" step="0.01" placeholder="Compare at price" value={variant.compareAtPrice} onChange={(e) => updateVariant(i, 'compareAtPrice', e.target.value)} className="input-field text-sm" />
                 <input required type="number" placeholder="Stock" value={variant.stock} onChange={(e) => updateVariant(i, 'stock', e.target.value)} className="input-field text-sm" />
                 <input type="number" step="0.01" placeholder="Weight (g)" value={variant.weight} onChange={(e) => updateVariant(i, 'weight', e.target.value)} className="input-field text-sm" />
+              </div>
+
+              {/* Bulk pricing tiers */}
+              <div className="mt-4 pt-4 border-t border-gray-100">
+                <div className="flex items-center justify-between mb-2">
+                  <div>
+                    <p className="text-sm font-medium text-gray-700">Volume Discounts</p>
+                    <p className="text-xs text-gray-500">
+                      Cart automatically applies the best tier when quantity meets the threshold.
+                    </p>
+                  </div>
+                  <button
+                    type="button"
+                    onClick={() => addTier(i)}
+                    className="text-xs text-brand-teal-600 hover:text-brand-teal-700 font-medium"
+                  >
+                    + Add Tier
+                  </button>
+                </div>
+                {variant.bulkTiers.length === 0 ? (
+                  <p className="text-xs text-gray-400 italic py-2">
+                    No volume discounts. Single unit price applies at all quantities.
+                  </p>
+                ) : (
+                  <div className="space-y-2">
+                    {variant.bulkTiers.map((tier, ti) => (
+                      <div key={ti} className="flex items-center gap-2">
+                        <span className="text-xs text-gray-500 w-12">Buy</span>
+                        <input
+                          type="number"
+                          min="2"
+                          placeholder="3"
+                          value={tier.qty}
+                          onChange={(e) => updateTier(i, ti, 'qty', e.target.value)}
+                          className="input-field text-sm w-20"
+                        />
+                        <span className="text-xs text-gray-500">+ at</span>
+                        <input
+                          type="number"
+                          step="0.01"
+                          placeholder="45.00"
+                          value={tier.price}
+                          onChange={(e) => updateTier(i, ti, 'price', e.target.value)}
+                          className="input-field text-sm w-28"
+                        />
+                        <span className="text-xs text-gray-500">each</span>
+                        <button
+                          type="button"
+                          onClick={() => removeTier(i, ti)}
+                          className="ml-auto text-xs text-red-500 hover:text-red-700"
+                        >
+                          Remove
+                        </button>
+                      </div>
+                    ))}
+                  </div>
+                )}
               </div>
             </div>
           ))}

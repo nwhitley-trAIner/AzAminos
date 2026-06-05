@@ -16,17 +16,17 @@ export function Navbar() {
           {/* Logo */}
           <Link href="/" className="flex items-center gap-2">
             <Image
-              src="/logo.png"
+              src="/logo-transparent.png"
               alt="AZ Aminos"
-              width={160}
-              height={48}
-              className="h-10 lg:h-12 w-auto"
+              width={200}
+              height={56}
+              className="h-12 lg:h-14 w-auto"
               priority
             />
           </Link>
 
           {/* Desktop Nav */}
-          <div className="hidden md:flex items-center gap-8">
+          <div className="hidden md:flex items-center gap-10">
             <Link
               href="/products"
               className="text-brand-navy-700 hover:text-brand-teal-600 font-medium transition-colors"
@@ -34,22 +34,16 @@ export function Navbar() {
               Products
             </Link>
             <Link
-              href="/products?category=healing"
+              href="/about"
               className="text-brand-navy-700 hover:text-brand-teal-600 font-medium transition-colors"
             >
-              Healing
+              About
             </Link>
             <Link
-              href="/products?category=growth-hormone"
+              href="/coa"
               className="text-brand-navy-700 hover:text-brand-teal-600 font-medium transition-colors"
             >
-              Growth Hormone
-            </Link>
-            <Link
-              href="/products?category=nootropics"
-              className="text-brand-navy-700 hover:text-brand-teal-600 font-medium transition-colors"
-            >
-              Nootropics
+              COAs
             </Link>
           </div>
 
@@ -116,28 +110,21 @@ export function Navbar() {
               className="block text-brand-navy-700 hover:text-brand-teal-600 font-medium py-2"
               onClick={() => setMobileOpen(false)}
             >
-              All Products
+              Products
             </Link>
             <Link
-              href="/products?category=healing"
+              href="/about"
               className="block text-brand-navy-700 hover:text-brand-teal-600 font-medium py-2"
               onClick={() => setMobileOpen(false)}
             >
-              Healing
+              About
             </Link>
             <Link
-              href="/products?category=growth-hormone"
+              href="/coa"
               className="block text-brand-navy-700 hover:text-brand-teal-600 font-medium py-2"
               onClick={() => setMobileOpen(false)}
             >
-              Growth Hormone
-            </Link>
-            <Link
-              href="/products?category=nootropics"
-              className="block text-brand-navy-700 hover:text-brand-teal-600 font-medium py-2"
-              onClick={() => setMobileOpen(false)}
-            >
-              Nootropics
+              COAs
             </Link>
           </div>
         )}

@@ -9,11 +9,11 @@ export function Footer() {
           {/* Brand */}
           <div className="md:col-span-1">
             <Image
-              src="/logo.png"
+              src="/logo-transparent.png"
               alt="AZ Aminos"
-              width={140}
-              height={42}
-              className="h-10 w-auto brightness-0 invert mb-4"
+              width={160}
+              height={48}
+              className="h-12 w-auto brightness-0 invert mb-4"
             />
             <p className="text-sm text-gray-400 leading-relaxed">
               Premium research peptides backed by third-party testing
@@ -122,7 +122,7 @@ export function Footer() {
           </div>
           <div className="flex flex-col sm:flex-row justify-between items-center gap-4 text-sm text-gray-500">
             <p>&copy; {new Date().getFullYear()} AZ Aminos. All rights reserved.</p>
-            <p>USA Made &middot; Third-Party Tested &middot; Batch-Specific COAs</p>
+            <p>Tested in US Labs &middot; Shipped from the USA &middot; Batch-Specific COAs</p>
           </div>
         </div>
       </div>

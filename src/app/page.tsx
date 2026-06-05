@@ -1,14 +1,16 @@
 import Link from 'next/link'
+import Image from 'next/image'
 import { prisma } from '@/lib/db'
 import { ProductGrid } from '@/components/products/product-grid'
+import { PeptideNetwork } from '@/components/hero/peptide-network'
 
 export const dynamic = 'force-dynamic'
 
 const trustBadges = [
   { icon: 'shield', label: '99%+ Purity', sublabel: 'HPLC Verified' },
-  { icon: 'beaker', label: 'Third-Party Tested', sublabel: 'Independent Labs' },
-  { icon: 'flag', label: 'USA Made', sublabel: 'Domestic Manufacturing' },
-  { icon: 'truck', label: 'Free Shipping', sublabel: 'Orders Over $99' },
+  { icon: 'beaker', label: 'Tested in US Labs', sublabel: 'Independently Verified' },
+  { icon: 'flag', label: 'Shipped from the USA', sublabel: 'Same-Day Processing' },
+  { icon: 'truck', label: 'Free US Shipping', sublabel: 'Orders Over $250' },
   { icon: 'document', label: 'Batch COAs', sublabel: 'Every Product' },
 ]
 
@@ -59,30 +61,49 @@ export default async function HomePage() {
   return (
     <>
       {/* Hero */}
-      <section className="bg-gradient-to-br from-brand-navy-900 via-brand-navy-800 to-brand-navy-700 text-white">
-        <div className="container-main py-20 lg:py-28">
-          <div className="max-w-2xl">
-            <p className="text-brand-teal-400 font-medium text-sm uppercase tracking-widest mb-4">
-              Research Peptides &middot; USA Made
-            </p>
-            <h1 className="text-4xl lg:text-5xl xl:text-6xl font-bold leading-tight mb-6">
-              Premium Research Peptides Backed by{' '}
-              <span className="text-brand-teal-400">Independent Testing</span>
-            </h1>
-            <p className="text-lg text-gray-300 leading-relaxed mb-8">
-              Every batch independently verified with third-party Certificates of
-              Analysis. 99%+ purity guaranteed. For research use only.
-            </p>
-            <div className="flex flex-wrap gap-4">
-              <Link href="/products" className="btn-primary text-lg px-8 py-4">
-                Shop Peptides
-              </Link>
-              <Link
-                href="/coa"
-                className="inline-flex items-center justify-center px-8 py-4 border-2 border-white/30 text-white font-semibold rounded-lg hover:bg-white/10 transition-colors"
-              >
-                View COAs
-              </Link>
+      <section className="relative overflow-hidden bg-brand-navy-900 text-white">
+        {/* Layer 1: animated peptide network */}
+        <PeptideNetwork />
+        {/* Layer 2: opaque navy overlay matching logo blue */}
+        <div className="absolute inset-0 bg-gradient-to-br from-brand-navy-900/90 via-brand-navy-800/85 to-brand-navy-700/80" />
+        {/* Layer 3: hero content */}
+        <div className="container-main relative py-20 lg:py-28">
+          <div className="grid lg:grid-cols-2 gap-8 items-center">
+            <div className="max-w-2xl">
+              <p className="text-brand-teal-400 font-medium text-sm uppercase tracking-widest mb-4">
+                Research Peptides &middot; Tested in US Labs
+              </p>
+              <h1 className="text-4xl lg:text-5xl xl:text-6xl font-bold leading-tight mb-6">
+                Premium Research Peptides Backed by{' '}
+                <span className="text-brand-teal-400">Independent Testing</span>
+              </h1>
+              <p className="text-lg text-gray-300 leading-relaxed mb-8">
+                Every batch independently verified with third-party Certificates of
+                Analysis. 99%+ purity guaranteed. For research use only.
+              </p>
+              <div className="flex flex-wrap gap-4">
+                <Link href="/products" className="btn-primary text-lg px-8 py-4">
+                  Shop Peptides
+                </Link>
+                <Link
+                  href="/coa"
+                  className="inline-flex items-center justify-center px-8 py-4 border-2 border-white/30 text-white font-semibold rounded-lg hover:bg-white/10 transition-colors"
+                >
+                  View COAs
+                </Link>
+              </div>
+            </div>
+
+            {/* Logo — hidden on mobile, large ghost mark on desktop */}
+            <div className="hidden lg:flex items-center justify-center">
+              <Image
+                src="/logo-transparent.png"
+                alt=""
+                width={600}
+                height={365}
+                priority
+                className="w-full max-w-[380px] h-auto drop-shadow-[0_0_45px_rgba(38,191,191,0.18)]"
+              />
             </div>
           </div>
         </div>
@@ -158,11 +179,11 @@ export default async function HomePage() {
                 </svg>
               </div>
               <h3 className="text-xl font-semibold text-brand-navy-800 mb-2">
-                USA Manufactured
+                Tested & Verified in US Labs
               </h3>
               <p className="text-gray-600 leading-relaxed">
-                All peptides manufactured in the United States under strict quality
-                controls. No imported or repackaged compounds.
+                Every batch independently tested by accredited US laboratories.
+                HPLC and mass-spec verification on file before any product ships.
               </p>
             </div>
             <div className="bg-white rounded-xl p-8 shadow-sm">
@@ -172,11 +193,11 @@ export default async function HomePage() {
                 </svg>
               </div>
               <h3 className="text-xl font-semibold text-brand-navy-800 mb-2">
-                Fast, Discreet Shipping
+                Shipped from the USA
               </h3>
               <p className="text-gray-600 leading-relaxed">
-                Same-day processing on orders placed before 2PM EST. Free shipping
-                on orders over $99. Discreet, temperature-controlled packaging.
+                Same-day processing on orders placed before 2PM EST. Free US
+                shipping on orders over $250. Discreet, temperature-controlled packaging.
               </p>
             </div>
           </div>

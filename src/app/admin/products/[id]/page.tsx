@@ -2,7 +2,7 @@
 
 import { useState, useEffect } from 'react'
 import { useRouter, useParams } from 'next/navigation'
-import { formatPriceDollars } from '@/lib/utils'
+import { VariantEditor } from './variant-editor'
 
 export default function EditProductPage() {
   const router = useRouter()
@@ -177,28 +177,18 @@ export default function EditProductPage() {
           </div>
         </section>
 
-        {/* Variant Summary (read-only for now) */}
+        {/* Variants — pricing, stock, and bulk discount tiers */}
         <section className="card p-6">
-          <h2 className="text-lg font-semibold mb-4">Variants</h2>
-          <div className="space-y-2">
+          <h2 className="text-lg font-semibold mb-4">Variants & Volume Pricing</h2>
+          <p className="text-xs text-gray-500 mb-4">
+            Edit per-variant unit price, stock, and bulk-discount tiers. Tiers
+            apply automatically in the cart when quantity meets the threshold.
+          </p>
+          <div className="space-y-4">
             {product.variants?.map((v: any) => (
-              <div key={v.id} className="flex items-center justify-between py-2 border-b border-gray-50">
-                <div>
-                  <span className="font-medium text-sm">{v.name}</span>
-                  <span className="text-xs text-gray-400 ml-2">({v.sku})</span>
-                </div>
-                <div className="flex items-center gap-4 text-sm">
-                  <span>{formatPriceDollars(v.price)}</span>
-                  <span className={v.stock === 0 ? 'text-red-500' : 'text-gray-600'}>
-                    Stock: {v.stock}
-                  </span>
-                </div>
-              </div>
+              <VariantEditor key={v.id} variant={v} />
             ))}
           </div>
-          <p className="text-xs text-gray-400 mt-3">
-            Variant management (add/edit/remove variants) coming soon. Use the API directly for now.
-          </p>
         </section>
 
         {error && (

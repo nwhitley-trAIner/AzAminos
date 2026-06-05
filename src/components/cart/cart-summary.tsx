@@ -4,7 +4,7 @@ import Link from 'next/link'
 import { useCart } from '@/lib/cart-context'
 import { formatPriceDollars } from '@/lib/utils'
 
-const FREE_SHIPPING_THRESHOLD = 99
+const FREE_SHIPPING_THRESHOLD = 250
 
 export function CartSummary() {
   const { subtotal, itemCount } = useCart()
@@ -35,7 +35,7 @@ export function CartSummary() {
 
         {remainingForFreeShipping > 0 && (
           <div className="bg-brand-teal-50 text-brand-teal-700 rounded-lg p-3 text-xs">
-            Add {formatPriceDollars(remainingForFreeShipping)} more for free shipping!
+            Add {formatPriceDollars(remainingForFreeShipping)} more for free US shipping!
           </div>
         )}
 
